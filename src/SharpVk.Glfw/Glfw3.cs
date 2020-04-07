@@ -116,6 +116,14 @@ namespace SharpVk.Glfw
         public static extern void PollEvents();
 
         /// <summary>
+        /// This function puts the calling thread to sleep until at least one event is available in the event queue.
+        /// Once one or more events are available, it behaves exactly like <see cref="PollEvents"/>,
+        /// i.e. the events in the queue are processed and the function then returns immediately.
+        /// </summary>
+        [DllImport(GlfwDll, CallingConvention = CallingConvention.Cdecl, EntryPoint = "glfwWaitEvents")]
+        public static extern void WaitEvents();
+
+        /// <summary>
         /// Sets hints for the next call to CreateWindow. The hints, once set,
         /// retain their values until changed by a call to WindowHint or
         /// DefaultWindowHints, or until the library is terminated.
@@ -180,6 +188,39 @@ namespace SharpVk.Glfw
         /// </returns>
         [DllImport(GlfwDll, CallingConvention = CallingConvention.Cdecl, EntryPoint = "glfwGetRequiredInstanceExtensions")]
         public static extern byte** GetRequiredInstanceExtensions(out int count);
+
+
+        /// <summary>
+        /// Returns the size, in pixels, of the framebuffer of the specified window.
+        /// </summary>
+        /// <param name="window">
+        /// The window whose framebuffer to query.
+        /// </param>
+        /// <param name="width">
+        /// Where to store the width, in pixels, of the framebuffer, or NULL.
+        /// </param>
+        /// <param name="height">
+        /// Where to store the height, in pixels, of the framebuffer, or NULL.
+        /// </param>
+        [DllImport(GlfwDll, CallingConvention = CallingConvention.Cdecl, EntryPoint = "glfwGetFramebufferSize")]
+        public static extern void GetFramebufferSize(WindowHandle window, out int width, out int height);
+
+        /// <summary>
+        /// Sets the framebuffer resize callback of the specified window, which is called
+        /// when the framebuffer of the specified window is resized.
+        /// The callback is provided with the size, in pixels coordinates, of the framebuffer.
+        /// </summary>
+        /// <param name="window">
+        /// The window whose callback to set.
+        /// </param>
+        /// <param name="callback">
+        /// The new callback, or Null to remove the currently set callback.
+        /// </param>
+        /// <returns>
+        /// The previously set callback, or NULL if no callback was set or the library had not been initialized.
+        /// </returns>
+        [DllImport(GlfwDll, CallingConvention = CallingConvention.Cdecl, EntryPoint = "glfwSetFramebufferSizeCallback")]
+        public static extern WindowSizeDelegate SetFrameBufferSizeCallback(WindowHandle window, WindowSizeDelegate callback);
 
         /// <summary>
         /// Sets the size callback of the specified window, which is called
@@ -366,7 +407,7 @@ namespace SharpVk.Glfw
         /// </returns>
         [DllImport(GlfwDll, CallingConvention = CallingConvention.Cdecl, EntryPoint = "glfwGetKeyName")]
         public static extern NativeString GetKeyName(Key key, int scancode);
-        
+
         [DllImport(GlfwDll, CallingConvention = CallingConvention.Cdecl, EntryPoint = "glfwGetKey")]
         public static extern InputAction GetKey(WindowHandle window, Key key);
 
