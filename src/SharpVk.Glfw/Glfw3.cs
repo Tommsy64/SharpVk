@@ -24,6 +24,16 @@ namespace SharpVk.Glfw
         public static extern bool Init();
 
         /// <summary>
+        /// Returns whether the Vulkan loader and any minimally functional ICD have been found. Must call Init() first.
+        /// </summary>
+        /// <returns>
+        /// True if Vulkan is minimally available, otherwise false
+        /// </returns>
+        [DllImport(GlfwDll, CallingConvention = CallingConvention.Cdecl, EntryPoint = "glfwVulkanSupported")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool IsVulkanSupported();
+
+        /// <summary>
         /// This function destroys all remaining windows and cursors, restores
         /// any modified gamma ramps and frees any other allocated resources.
         /// </summary>
